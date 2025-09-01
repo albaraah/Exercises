@@ -71,9 +71,3 @@ while True:
     N = N - 1
 pi_value = 4 * n / points
 print(f"pi value : {pi_value}")
-import random
-dice_roll = int(input("How many dice to roll?:\n"))
-total_num = 0
-for dice in range(dice_roll):
-    total_num += random.randint(1,6)
-print(f"The sum of numbers is {total_num}")
