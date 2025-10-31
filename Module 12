@@ -1,0 +1,20 @@
+import requests
+
+request = "https://api.chucknorris.io/jokes/random"
+response = requests.get(request).json()
+print(response["value"])
+
+
+
+import requests
+
+municipality = input("Enter municipality:")
+request = "https://api.openweathermap.org/data/2.5/weather?q=" + municipality + "&appid=API_KEY"
+response = requests.get(request).json()
+weather_description = response["weather"][0]["description"]
+weather_kelvin = response["main"]["temp"]
+weather_celsius = weather_kelvin - 273.15
+print(f"Weather condition description: {weather_description} ")
+print(f"The temperature in celsius is: {weather_celsius:.2f} C")
+
+
