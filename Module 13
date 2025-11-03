@@ -1,0 +1,53 @@
+from flask import Flask, Response
+import json
+app = Flask(__name__)
+@app.route('/prime_number/<number>')
+def prime(number):
+    number = int(number)
+    if number < 2:
+        response = {"Number":number, "isPrime": False}
+    else:
+        for i in range(2,number):
+            if number % i == 0:
+                response = {"Number": number, "isPrime": False}
+                break
+        else:
+            response = {"Number":number, "isPrime": True}
+    return Response(json.dumps(response), mimetype='application/json')
+if __name__ == '__main__':
+    app.run(use_reloader=True, host='127.0.0.1', port=5000)
+
+
+
+from flask import Flask, Response
+import mysql.connector
+import json
+
+app = Flask(__name__)
+
+@app.route('/airport/<icao>')
+def get_airport(icao):
+    airport = mysql.connector.connect(
+        host="localhost",
+        user="albaraae",
+        password="1234",
+        database="flight_game"
+    )
+
+    cursor = airport.cursor()
+    cursor.execute(""" SELECT airport.name, country.name FROM airport, country WHERE airport.iso_country = country.iso_country AND airport.ident = %s """, (icao,))
+
+    data = cursor.fetchone()
+
+    if data:
+        result = {
+            "ICAO": icao,
+            "Name": data[0],
+            "Country": data[1]
+        }
+    else:
+        result = {"error": "Airport not found"}
+
+    return Response(json.dumps(result), mimetype="application/json")
+if __name__ == "__main__":
+    app.run(use_reloader=True, host='127.0.0.1', port=5000)
